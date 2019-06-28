@@ -5,7 +5,8 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: "inline-flex",
     flexWrap: "wrap",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginBottom: "50px"
   },
   textField: {
     marginLeft: theme.spacing(1),

@@ -9,6 +9,8 @@ const useStyles = makeStyles({
     
   });
 
+
+// PictureCards will render the actual pictures on the screen.
 export default function PictureCards(props) {
     const { farm, id, secret, server } = props;
     const classes = useStyles();
