@@ -5,13 +5,15 @@ import ButtonBases from "./MainNavigation";
 import SearchBar from "./SearchBar";
 import axios from "axios";
 import apiKey from "../config";
-import CatPage from "./CatPage";
+import ButtonLinkResults from "./ButtonLinkResults";
+import { Fade } from "react-reveal";
 
 // Main container holds the routes set up.
 // This will be the main source of truth to pass down props to various components.
 const MainContainer = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  
 
   const performSearch = query => {
     axios
@@ -21,7 +23,7 @@ const MainContainer = () => {
       .then(res => {
         setResults(res.data.photos.photo);
         setLoading(false);
-      });
+      })
   };
 
   return (
@@ -30,8 +32,10 @@ const MainContainer = () => {
         <h2>Flickr Search</h2>
         <SearchBar
             performSearch={performSearch}
+            results={results}
+            setResults={setResults}
         />
-        {results.length === 0 ? <ButtonBases /> : null}
+        {results.length === 0 ? <Fade left><ButtonBases /></Fade> : null}
         <Switch>
           <Route
             exact
@@ -40,10 +44,13 @@ const MainContainer = () => {
               <App
                 results={results}
                 loading={loading}
+                setLoading={setLoading(false)}
               />
             )}
           />
-          <Route path="/Cats" render={() => <CatPage />} />
+          <Route path="/Cats" render={() => <ButtonLinkResults results={results} loading={loading} performSearch={performSearch} />} />
+          <Route path="/Sunshine" render={() => <ButtonLinkResults results={results} loading={loading} performSearch={performSearch} />} />
+          <Route path="/Rainbows" render={() => <ButtonLinkResults results={results} loading={loading} performSearch={performSearch} />} />
         </Switch>
       </div>
     </HashRouter>

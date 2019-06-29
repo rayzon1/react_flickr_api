@@ -6,7 +6,7 @@ import PictureCards from './components/PictureCards';
 function App(props) {
   
   return (
-    <div className="App">
+    <div >
       
       <br />
       <br />

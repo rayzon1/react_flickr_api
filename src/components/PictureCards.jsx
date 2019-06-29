@@ -1,10 +1,12 @@
 import React from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
+import { Flip } from 'react-reveal';
 
 const useStyles = makeStyles({
     root: {
-      maxWidth: '500px',
-      maxHeight: '281px',
+      maxWidth: '450px',
+      maxHeight: '200px',
+      boxShadow: '5px 10px 18px #8888'
     },
     
   });
@@ -18,8 +20,10 @@ export default function PictureCards(props) {
 
     return(
     
-        <Grid item xs>
-            <img src={`https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`} alt="" className={classes.root} />
+        <Grid item >
+            <Flip left>
+                <img src={`https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`} alt="" className={classes.root} />
+            </Flip>
         </Grid>
         
     )

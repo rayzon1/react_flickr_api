@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextField, makeStyles, Button } from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SearchBar(props) {
+function SearchBar(props) {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");
 
@@ -32,6 +33,34 @@ export default function SearchBar(props) {
     console.log("submitted...");
   };
 
+  const clearResults = (e) => {
+    e.preventDefault();
+    props.setResults([]);
+    props.history.push('/');
+  }
+
+  const submitButton = (
+    <Button
+          variant="outlined"
+          color="primary"
+          type="submit"
+          className={classes.button}
+        >
+          Submit
+        </Button>
+  )
+
+  const clearButton = (
+    <Button
+          variant="outlined"
+          color="secondary"
+          className={classes.button}
+          onClick={clearResults}
+        >
+          Clear
+        </Button>
+  )
+
   return (
     <div>
       <form className={classes.container} onSubmit={handleSubmit}>
@@ -42,16 +71,14 @@ export default function SearchBar(props) {
           className={classes.textField}
           margin="normal"
           onChange={handleChange}
+          autoComplete="off"
+          required={true}
         />
-        <Button
-          variant="outlined"
-          color="primary"
-          type="submit"
-          className={classes.button}
-        >
-          Submit
-        </Button>
+        {props.results.length < 1 ? submitButton : clearButton}
+          
       </form>
     </div>
   );
 }
+
+export default withRouter(SearchBar);
