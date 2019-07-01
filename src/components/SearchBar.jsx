@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField, makeStyles, Button } from "@material-ui/core";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
+
+// Search Field styles imported from Material-UI.
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -19,9 +21,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SearchBar(props) {
+/**
+ *  SearchBar Component.
+ *  Returns a form with a search text field and either submit of clear buttons.
+ */
+
+function SearchBar({
+  performSearch,
+  results,
+  setResults,
+  setLoading,
+  searchText,
+  setSearchText,
+  history
+}) {
   const classes = useStyles();
-  const [searchText, setSearchText] = useState("");
 
   const handleChange = e => {
     setSearchText(e.target.value);
@@ -29,37 +43,38 @@ function SearchBar(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.performSearch(searchText)
+    performSearch(searchText);
     console.log("submitted...");
   };
 
-  const clearResults = (e) => {
+  const clearResults = e => {
     e.preventDefault();
-    props.setResults([]);
-    props.history.push('/');
-  }
+    setResults([]);
+    setLoading(true);
+    history.push("/");
+  };
 
   const submitButton = (
     <Button
-          variant="outlined"
-          color="primary"
-          type="submit"
-          className={classes.button}
-        >
-          Submit
-        </Button>
-  )
+      variant="outlined"
+      color="primary"
+      type="submit"
+      className={classes.button}
+    >
+      Submit
+    </Button>
+  );
 
   const clearButton = (
     <Button
-          variant="outlined"
-          color="secondary"
-          className={classes.button}
-          onClick={clearResults}
-        >
-          Clear
-        </Button>
-  )
+      variant="outlined"
+      color="secondary"
+      className={classes.button}
+      onClick={clearResults}
+    >
+      Clear
+    </Button>
+  );
 
   return (
     <div>
@@ -74,8 +89,7 @@ function SearchBar(props) {
           autoComplete="off"
           required={true}
         />
-        {props.results.length < 1 ? submitButton : clearButton}
-          
+        {results.length < 1 ? submitButton : clearButton}
       </form>
     </div>
   );

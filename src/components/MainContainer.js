@@ -13,8 +13,7 @@ import { Fade } from "react-reveal";
 const MainContainer = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [resultObj, setResultObj] = useState({});
-  
+  const [searchText, setSearchText] = useState("");
 
   const performSearch = (query, page = 1) => {
     axios
@@ -22,16 +21,9 @@ const MainContainer = () => {
         `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&format=json&nojsoncallback=1&per_page=24&page=${page}`
       )
       .then(res => {
-        setResultObj(res.data.photos);
-        console.log(resultObj)
         setResults(res.data.photos.photo);
         setLoading(false);
-        return res;
-      })
-    //   .then(res => {
-        
-    //   })
-    
+      });
   };
 
   return (
@@ -39,27 +31,69 @@ const MainContainer = () => {
       <div>
         <h2>Flickr Search</h2>
         <SearchBar
-            performSearch={performSearch}
-            results={results}
-            setResults={setResults}
+          performSearch={performSearch}
+          results={results}
+          setResults={setResults}
+          setLoading={setLoading}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
-        {results.length === 0 ? <Fade left><ButtonBases /></Fade> : null}
+        {results.length === 0 ? (
+          <Fade left>
+            <ButtonBases setSearchText={setSearchText} />
+          </Fade>
+        ) : null}
         <Switch>
           <Route
             exact
             path="/"
+            render={() =>
+              results.length > 0 ? (
+                <App
+                  results={results}
+                  loading={loading}
+                  performSearch={performSearch}
+                  searchText={searchText}
+                />
+              ) : null
+            }
+          />
+          <Route
+            path="/Cats"
             render={() => (
-              <App
+              <ButtonLinkResults
                 results={results}
                 loading={loading}
-                setLoading={setLoading(false)}
-                resultObj={resultObj}
+                performSearch={performSearch}
+                searchText={searchText}
+                setSearchText={setSearchText}
               />
             )}
           />
-          <Route path="/Cats" render={() => <ButtonLinkResults results={results} loading={loading} performSearch={performSearch} />} />
-          <Route path="/Sunshine" render={() => <ButtonLinkResults results={results} loading={loading} performSearch={performSearch} />} />
-          <Route path="/Rainbows" render={() => <ButtonLinkResults results={results} loading={loading} performSearch={performSearch} />} />
+          <Route
+            path="/Sunshine"
+            render={() => (
+              <ButtonLinkResults
+                results={results}
+                loading={loading}
+                performSearch={performSearch}
+                searchText={searchText}
+                setSearchText={setSearchText}
+              />
+            )}
+          />
+          <Route
+            path="/Rainbows"
+            render={() => (
+              <ButtonLinkResults
+                results={results}
+                loading={loading}
+                performSearch={performSearch}
+                searchText={searchText}
+                setSearchText={setSearchText}
+              />
+            )}
+          />
         </Switch>
       </div>
     </HashRouter>

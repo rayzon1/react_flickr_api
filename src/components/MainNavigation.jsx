@@ -98,12 +98,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ButtonBases(props) {
+function ButtonBases({ history, setSearchText }) {
   const classes = useStyles();
 
   const handleClick = (title) => {
     let path = `/${title}`;
-    props.history.push(path);
+    setSearchText(path);
+    history.push(path);
   }
 
   return (
