@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import App from "../App";
 import { withRouter } from "react-router-dom";
 
+/**
+ * This component is rendered upon button clicks navigating to the respective path.
+ */
 class ButtonLinkResults extends Component {
   componentDidMount() {
     const regEx = /\w+/;

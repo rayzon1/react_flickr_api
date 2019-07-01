@@ -7,9 +7,13 @@ import axios from "axios";
 import apiKey from "../config";
 import ButtonLinkResults from "./ButtonLinkResults";
 import { Fade } from "react-reveal";
+import Page404 from "./NotFound404";
 
-// Main container holds the routes set up.
-// This will be the main source of truth to pass down props and functions to various components.
+/**
+ * Main container holds the routes set up.
+ * This will be the main source of truth to pass 
+ * down props and functions to various components.
+ */
 const MainContainer = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,6 +98,7 @@ const MainContainer = () => {
               />
             )}
           />
+          <Route component={Page404} />
         </Switch>
       </div>
     </HashRouter>

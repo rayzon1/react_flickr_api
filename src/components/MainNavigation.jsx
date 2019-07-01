@@ -98,6 +98,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * This is the component for the main Button navigations on the home page.
+ * Each button will redirect to their specified path, which will render 
+ * their results.
+ */
+
 function ButtonBases({ history, setSearchText }) {
   const classes = useStyles();
 

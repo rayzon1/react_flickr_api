@@ -4,9 +4,11 @@ import "./App.css";
 import PictureCards from "./components/PictureCards";
 import PaginationLinks from "./components/PaginationLinks";
 
-// Main container for the search results which displays the pictures returned.
-// Below ternary will check loading state. If results are still loading and the
-// dom has not updated, the page will display loading text.
+/**
+ * Main container for the search results which displays the pictures returned.
+ * Below ternary will check loading state. If results are still loading and the
+ * dom has not updated, the page will display loading text.
+ */
 
 function App({ loading, results, performSearch, searchText }) {
   const numArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
