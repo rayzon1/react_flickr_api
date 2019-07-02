@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
  */
 
 function SearchBar({
-  performSearch,
   results,
   setResults,
   setLoading,
@@ -43,7 +42,7 @@ function SearchBar({
 
   const handleSubmit = e => {
     e.preventDefault();
-    performSearch(searchText);
+    history.push(`/Search/${searchText}`);
     console.log("submitted...");
   };
 

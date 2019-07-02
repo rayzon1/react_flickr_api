@@ -109,7 +109,7 @@ function ButtonBases({ history, setSearchText }) {
 
   const handleClick = (title) => {
     let path = `/${title}`;
-    setSearchText(path);
+    setSearchText(title);
     history.push(path);
   }
 

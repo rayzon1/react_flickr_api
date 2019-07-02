@@ -5,7 +5,10 @@ import { withRouter } from "react-router-dom";
 /**
  * This component is rendered upon button clicks navigating to the respective path.
  */
+
 class ButtonLinkResults extends Component {
+  
+  // *** Need to Fix this for search render ***
   componentDidMount() {
     const regEx = /\w+/;
     const url = regEx.exec(this.props.match.url);
