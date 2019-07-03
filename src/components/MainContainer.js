@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
-// import App from "../App";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import ButtonBases from "./MainNavigation";
 import SearchBar from "./SearchBar";
 import axios from "axios";
@@ -8,6 +7,7 @@ import apiKey from "../config";
 import ButtonLinkResults from "./ButtonLinkResults";
 import { Fade } from "react-reveal";
 import Page404 from "./NotFound404";
+import NoResults from "./NoResultsFound";
 
 /**
  * Main container holds the routes set up.
@@ -17,7 +17,9 @@ import Page404 from "./NotFound404";
 const MainContainer = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [found, setFound] = useState(true);
   const [searchText, setSearchText] = useState("");
+  
 
   const performSearch = (query, page = 1) => {
     axios
@@ -25,9 +27,14 @@ const MainContainer = () => {
         `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&format=json&nojsoncallback=1&per_page=24&page=${page}safe_search=1`
       )
       .then(res => {
-        setResults(res.data.photos.photo);
+        if(res.data.photos.photo.length === 0){
+          setFound(false);
+        } else {
+          setResults(res.data.photos.photo);
+        }
         setLoading(false);
-      });
+      })
+      .then(results.length === 0 ? <Redirect to='/NotFound' /> : null)
   };
 
   const homeRender = () => {
@@ -68,6 +75,10 @@ const MainContainer = () => {
             <ButtonBases setSearchText={setSearchText} />
           </Fade>
         ) : null}
+        {(found === false)
+            ? <Redirect to='/NotFound' /> 
+            : null}
+
         <Switch>
           <Route
             exact
@@ -76,7 +87,7 @@ const MainContainer = () => {
           />
           <Route
             exact
-            path="/Search/:search"
+            path={"/Search/:search"}
             render={pathRender}
           />
           <Route
@@ -91,7 +102,11 @@ const MainContainer = () => {
             path="/Rainbows"
             render={pathRender}
           />
-          <Route component={searchText ? Page404 : null} />
+          <Route
+            path='/NotFound'
+            render={() => <NoResults searchText={searchText} />}
+          />
+          <Route component={Page404} />
         </Switch>
       </div>
     </HashRouter>

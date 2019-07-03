@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField, makeStyles, Button } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 // Search Field styles imported from Material-UI.
 
@@ -32,7 +32,8 @@ function SearchBar({
   setLoading,
   searchText,
   setSearchText,
-  history
+  history,
+  performSearch
 }) {
   const classes = useStyles();
 
@@ -42,8 +43,11 @@ function SearchBar({
 
   const handleSubmit = e => {
     e.preventDefault();
-    history.push(`/Search/${searchText}`);
     console.log("submitted...");
+    history.push(`/Search/${searchText}`);
+    performSearch(searchText)
+    // history.location.pathname(`/Search/${searchText}`)
+  
   };
 
   const clearResults = e => {
@@ -88,7 +92,9 @@ function SearchBar({
           autoComplete="off"
           required={true}
         />
-        {results.length < 1 ? submitButton : clearButton}
+        {submitButton}
+        {results.length > 0 ? clearButton : null}
+        {/* {results.length === 0 ? <Redirect to='/NotFound' /> : null} */}
       </form>
     </div>
   );

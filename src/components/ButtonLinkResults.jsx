@@ -8,12 +8,9 @@ import { withRouter } from "react-router-dom";
 
 class ButtonLinkResults extends Component {
   
-  // *** Need to Fix this for search render ***
   componentDidMount() {
-    const regEx = /\w+/;
-    const url = regEx.exec(this.props.match.url);
-    this.props.setSearchText(url[0])
-    this.props.performSearch(url[0]);
+    this.props.performSearch(this.props.searchText);
+    
   }
 
   render() {
