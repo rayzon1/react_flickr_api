@@ -26,9 +26,10 @@ class ButtonLinkResults extends Component {
       this.props.setResults([]);
       this.props.performSearch(this.props.searchText);
       this.props.setLoading(true);
-    } else if (this.props.results.length === 0) {
-      this.props.history.push("/NotFound");
-    }
+    } 
+    // else if (this.props.results.length === 0) {
+    //   this.props.history.push("/NotFound");
+    // }
   }
 
   /**
