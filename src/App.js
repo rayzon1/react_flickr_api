@@ -10,7 +10,7 @@ import PaginationLinks from "./components/PaginationLinks";
  * dom has not updated, the page will display loading text.
  */
 
-function App({ loading, results, performSearch, searchText }) {
+function App({ loading, results, performSearch, searchText, setLoading }) {
   const numArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
@@ -24,6 +24,7 @@ function App({ loading, results, performSearch, searchText }) {
               key={index}
               performSearch={performSearch}
               searchText={searchText}
+              setLoading={setLoading}
             />
           ))}
       <br />

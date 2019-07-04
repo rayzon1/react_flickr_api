@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, makeStyles, Button } from "@material-ui/core";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
-// Search Field styles imported from Material-UI.
-
+/**
+ * Search Field styles imported from Material-UI.
+ */
 const useStyles = makeStyles(theme => ({
   container: {
     display: "inline-flex",
@@ -22,34 +23,43 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- *  SearchBar Component.
- *  Returns a form with a search text field and either submit of clear buttons.
+ *  SearchBar Component.Returns a form with a search text field and
+ *  either submit of clear buttons.
  */
-
 function SearchBar({
   results,
   setResults,
   setLoading,
-  searchText,
   setSearchText,
-  history,
-  performSearch
+  history
 }) {
   const classes = useStyles();
+  const [textChange, setTextChange] = useState("");
 
+  /**
+   * Sets local textChange hook state to input value.
+   * @param {*} e
+   */
   const handleChange = e => {
-    setSearchText(e.target.value);
+    setTextChange(e.target.value);
   };
 
+  /**
+   * Handles the submit action on the form. Will set the main
+   * searchText to held value in textChange. Will route to search
+   * route.
+   */
   const handleSubmit = e => {
     e.preventDefault();
     console.log("submitted...");
-    history.push(`/Search/${searchText}`);
-    performSearch(searchText)
-    // history.location.pathname(`/Search/${searchText}`)
-  
+    setSearchText(textChange);
+    history.replace(`/Search/${textChange}`);
   };
 
+  /**
+   * Handler for clear button will clear out results array, and set loading
+   * back to true. Will also route back to the homepage.
+   */
   const clearResults = e => {
     e.preventDefault();
     setResults([]);
@@ -57,6 +67,10 @@ function SearchBar({
     history.push("/");
   };
 
+  /**
+   * Submit button functional component. It is returned in below
+   * form div.
+   */
   const submitButton = (
     <Button
       variant="outlined"
@@ -68,6 +82,10 @@ function SearchBar({
     </Button>
   );
 
+  /**
+   * Clear button functional component. It is returned in below
+   * form div.
+   */
   const clearButton = (
     <Button
       variant="outlined"
@@ -79,6 +97,10 @@ function SearchBar({
     </Button>
   );
 
+  /**
+   * Component returns textfield as well as submit button. Clear button will
+   * show upon conditional.
+   */
   return (
     <div>
       <form className={classes.container} onSubmit={handleSubmit}>
@@ -94,7 +116,6 @@ function SearchBar({
         />
         {submitButton}
         {results.length > 0 ? clearButton : null}
-        {/* {results.length === 0 ? <Redirect to='/NotFound' /> : null} */}
       </form>
     </div>
   );

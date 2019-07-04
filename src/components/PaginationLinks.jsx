@@ -2,6 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
+/**
+ * Material-UI styles.
+ */
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -11,24 +14,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// 1. Map through array of nums 1-10.
-// 2. Each buttons text field will contain index + 1.
-// 3. Add onClick method which will call handler to run performSearch.
-// 4. Props need to contain result hook for handler.
-// *. Destructure props like { prop, prop, prop } within each component argument field.
-
+/**
+ * Functional component for PaginationLinks. This will when search results are
+ * rendered to the DOM.
+ */
 export default function PaginationLinks({
   buttonNum,
   performSearch,
-  searchText
+  searchText,
+  setLoading
 }) {
   const classes = useStyles();
 
+  /**
+   * Click handler will set loading to true as well as
+   * perform the search.
+   * @param {*} e 
+   */
   const handleClick = (e) => {
     e.preventDefault();
+    setLoading(true);
     performSearch(searchText, buttonNum);
   }
 
+  /**
+   * Generated button with nums as text display.
+   */
   return (
     <Button className={classes.button} onClick={handleClick}>
       {buttonNum}

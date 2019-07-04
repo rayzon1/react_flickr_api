@@ -11,53 +11,78 @@ import NoResults from "./NoResultsFound";
 
 /**
  * Main container holds the routes set up.
- * This will be the main source of truth to pass 
- * down props and functions to various components.
+ * This will be the main source of truth to pass
+ * down props to various components.
  */
 const MainContainer = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [found, setFound] = useState(true);
   const [searchText, setSearchText] = useState("");
-  
 
+  /**
+   * Function API call. Accepts a query string as well as a page number
+   * to search. This function will be called multiple times in different
+   * areas.
+   * @param {string} query
+   * @param {integer} page
+   */
   const performSearch = (query, page = 1) => {
     axios
       .get(
         `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&format=json&nojsoncallback=1&per_page=24&page=${page}safe_search=1`
       )
       .then(res => {
-        if(res.data.photos.photo.length === 0){
+        if (res.data.photos.photo.length === 0) {
           setFound(false);
+          if (found === false) {
+            return <Redirect to="/NotFound" />;
+          }
         } else {
           setResults(res.data.photos.photo);
         }
         setLoading(false);
       })
-      .then(results.length === 0 ? <Redirect to='/NotFound' /> : null)
+      .then(results.length === 0 ? <Redirect to="/NotFound" /> : null)
+      .catch(err => "There was an error: " + err.text);
   };
 
+  /**
+   * This function is rendered for the home path. Will clear out
+   * the results which will trigger the main page to be rendered.
+   */
   const homeRender = () => {
-    if(results.length > 0){
+    if (results.length > 0) {
       setResults([]);
       setLoading(true);
     } else {
-      return null
+      return null;
     }
-  }
+  };
 
+  /**
+   * This will return an instance of the ButtonLinkResults component.
+   * This will be rendered upon various routes.
+   */
   const pathRender = () => {
     return (
       <ButtonLinkResults
         results={results}
+        setResults={setResults}
         loading={loading}
+        setLoading={setLoading}
         performSearch={performSearch}
         searchText={searchText}
         setSearchText={setSearchText}
       />
-    )
-  }
+    );
+  };
 
+  /**
+   * Various routing paths returned by the main functional component.
+   * Conditional for the buttons depends on if results array is empty
+   * or populated.
+   */
   return (
     <HashRouter>
       <div>
@@ -75,37 +100,13 @@ const MainContainer = () => {
             <ButtonBases setSearchText={setSearchText} />
           </Fade>
         ) : null}
-        {(found === false)
-            ? <Redirect to='/NotFound' /> 
-            : null}
-
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={homeRender}
-          />
-          <Route
-            exact
-            path={"/Search/:search"}
-            render={pathRender}
-          />
-          <Route
-            path="/Cats"
-            render={pathRender}
-          />
-          <Route
-            path="/Sunshine"
-            render={pathRender}
-          />
-          <Route
-            path="/Rainbows"
-            render={pathRender}
-          />
-          <Route
-            path='/NotFound'
-            render={() => <NoResults searchText={searchText} />}
-          />
+          <Route exact path="/" render={homeRender} />
+          <Route exact path={"/Search/:search"} render={pathRender} />
+          <Route path="/Cats" render={pathRender} />
+          <Route path="/Sunshine" render={pathRender} />
+          <Route path="/Rainbows" render={pathRender} />
+          <Route path="/NotFound" render={() => <NoResults />} />
           <Route component={Page404} />
         </Switch>
       </div>

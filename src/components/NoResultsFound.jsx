@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-export default function NoResults () {
-
-
-    return(
-        <div>
-            <h2>Oops! no search results found...</h2>
-        </div>
-    )
-
+/**
+ * Function rendered when routed to /NoResults.
+ */
+export default function NoResults() {
+  return (
+    <div>
+      <h2>Oops! no search results</h2>
+    </div>
+  );
 }
