@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import App from "../App";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 /**
  * This component is rendered upon search route as well as main button
@@ -23,19 +23,19 @@ class ButtonLinkResults extends Component {
    */
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
-      this.props.setResults([]);
       this.props.performSearch(this.props.searchText);
       this.props.setLoading(true);
-    } 
-    // else if (this.props.results.length === 0) {
-    //   this.props.history.push("/NotFound");
-    // }
+    }
   }
 
   /**
    * Renders App component with required props.
    */
   render() {
+    if (this.props.found === false) {
+      this.props.setFound(true);
+      return <Redirect to="/NotFound" />;
+    }
     return (
       <App
         results={this.props.results}

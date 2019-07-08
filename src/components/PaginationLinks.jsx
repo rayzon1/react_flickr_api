@@ -29,13 +29,13 @@ export default function PaginationLinks({
   /**
    * Click handler will set loading to true as well as
    * perform the search.
-   * @param {*} e 
+   * @param {*} e
    */
-  const handleClick = (e) => {
+  const handleClick = e => {
     e.preventDefault();
     setLoading(true);
     performSearch(searchText, buttonNum);
-  }
+  };
 
   /**
    * Generated button with nums as text display.

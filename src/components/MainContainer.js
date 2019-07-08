@@ -35,12 +35,8 @@ const MainContainer = () => {
       .then(res => {
         if (res.data.photos.photo.length === 0) {
           setFound(false);
-          if (found === false) {
-            return <Redirect to="/NotFound" />;
-          }
-        } else {
-          setResults(res.data.photos.photo);
         }
+        setResults(res.data.photos.photo);
         setLoading(false);
       })
       .then(results.length === 0 ? <Redirect to="/NotFound" /> : null)
@@ -74,6 +70,8 @@ const MainContainer = () => {
         performSearch={performSearch}
         searchText={searchText}
         setSearchText={setSearchText}
+        found={found}
+        setFound={setFound}
       />
     );
   };
